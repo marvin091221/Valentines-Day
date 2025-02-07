@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('/ValentinesDayApp/Pictures/Valentines-Day.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            font-size: 8vw; /* Responsive font size */
+            animation: fadeIn 1s, fadeOut 4s 5s forwards;
+        }
+        .intro-title {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .heart {
+            position: absolute;
+            width: 5vw; 
+            height: 5vw; 
+            background-color: red;
+            animation: float 4s forwards;
+            opacity: 0.9;
+            clip-path: polygon(50% 0%, 95% 40%, 50% 100%, 5% 40%);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .main_container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 95%;
+            opacity: 0;
+            animation: showContent 1s forwards 5s; 
+        }
+
+        @keyframes showContent {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .title {
+            padding: 2% 5%;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5vw; 
+            font-weight: bolder;
+            letter-spacing: 9px;
+            color: #ffffff;
+            border-radius: 20px;
+            margin-bottom: 5%;
+            text-align: center;
+            width: 100%;
+        }
+
+        .image-container {
+            display: flex;
+            overflow-x: auto;
+            width: 100%;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px;
+        }
+
+        .image-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .image-container img {
+            width: 22vw; 
+            height: 40dvh; 
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid #eb3e5b;
+            transition: transform 0.3s;
+            margin-right: 10px;
+            cursor: pointer;
+            max-width: 350px; 
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .btn {
+            padding: 1% 3%;
+            margin-top: 7%;
+            background-color: #f10028;
+            color: white;
+            border: 1px solid;
+            border-radius: 10px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e60024;
+            transform: scale(1.05);
+            border: 1px solid white;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 15px;
+            transform: scale(0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .overlay.active img {
+            transform: scale(1);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 8vw;
+                padding: 25px;
+            }
+            .main_container {
+                width: 88%;
+            }
+            .image-container img {
+                width: 25vw; 
+                height: 26dvh; 
+                object-fit: cover;
+                border-radius: 15px;
+                border: 2px solid #eb3e5b;
+                transition: transform 0.3s;
+                margin-right: 10px;
+                cursor: pointer;
+                max-width: 350px; 
+            }
+            .title {
+                margin-bottom: 15%;
+            }
+            .btn {
+                padding: 10px 20px;
+                margin-top: 20%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .intro {
+                font-size: 10vw; 
+            }
+            .title {
+                margin-bottom: 15%;
+            }
+            .btn {
+                padding: 10px 20px;
+                margin-top: 30%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro" id="intro">
+        <div class="intro-title">Happy Valentine's Day, Babe!</div>
+        <div class="heart" id="heart1"></div>
+        <div class="heart" id="heart2"></div>
+        <div class="heart" id="heart3"></div>
+        <div class="heart" id="heart4"></div>
+        <div class="heart" id="heart5"></div>
+    </div>
+    <div class="main_container">
+        <h1 class="title">Pictures of my beloved Babe.</h1>
+        <div class="image-container" id="imageContainer">
+            <!-- Images remain the same. Ensure their paths are correct. -->
+            <img src="/ValentinesDayApp/Pictures/2c9d83cc-535e-42e9-b8e1-cfc20746be40.jpg" alt="Image1" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/afdb5473-4028-40e1-ab32-c5855585d0ee.jpg" alt="Image2" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/187711e3-10e6-4f10-8350-f65865c4c3d3.jpg" alt="Image3" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/190cf715-6c09-48bf-bb03-cf7cb0cd330f.jpg" alt="Image4" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/95c4a273-37db-4a75-907b-767ba6df320c.jpg" alt="Image5" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/261c972f-8955-4a47-8e33-a78381431d2b.jpg" alt="Image6" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/2e89b30c-b031-46e9-b92e-191a62023121.jpg" alt="Image7" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/b608cd05-a0df-4d8f-acd9-980ea624d5aa.jpg" alt="Image8" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/a62e6991-5f7b-4514-ba97-312718c48284.jpg" alt="Image9" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/22347d80-adfa-4461-95be-8216a631eea3.jpg" alt="Image10" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/aa0285a9-e1aa-45b8-86d6-08d0db30f032.jpg" alt="Image11" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/50a91038-fe3f-4070-a49f-ebd88a2c524a.jpg" alt="Image12" class="image-item">
+            <img src="/ValentinesDayApp/Pictures/7dca3b76-3b23-47a8-93c4-ee752cf3ec26.jpg" alt="Image13" class="image-item">
+        </div>
+        <button class="btn" onclick="location.href='message.html'">Read the Message</button>
+    </div>
+    <div class="overlay" id="overlay">
+        <img id="overlayImage" src="" alt="Enlarged Image">
+    </div>
+
+    <script>
+        // Function to create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+
+            // Randomize the starting position
+            heart.style.left = Math.random() * 100 + 'vw'; 
+            heart.style.top = Math.random() * 100 + 'vh'; 
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+
+            document.getElementById('intro').appendChild(heart);
+            
+            // Remove heart after animation is complete
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        // Generate hearts every 300 milliseconds
+        setInterval(createHeart, 300);
+
+        // Image click functionality for enlarged view
+        document.querySelectorAll('.image-item').forEach(img => {
+            img.addEventListener('click', function () {
+                const overlay = document.getElementById('overlay');
+                const overlayImage = document.getElementById('overlayImage');
+                overlayImage.src = this.src;
+                overlay.classList.add('active');
+            });
+        });
+        document.getElementById('overlay').addEventListener('click', function () {
+            this.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
