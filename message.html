@@ -274,17 +274,12 @@
         <button class="button-back" onclick="location.href='homepage.html'">Back to Home</button>
         
     <div class="music-control" id="musicControl" title="Toggle Music">🎵</div>
-    <!-- <button id="musicControl">🔇</button> -->
     </div>
 
-    <!-- Audio Element -->
-    <!-- <audio id="bgMusic" loop>
-        <source src="Songs/PALAGI - TJ Monterde  OFFICIAL MUSIC VIDEO.mp3" type="audio/mp3">
-    </audio> -->
     <audio id="bgMusic" loop>
         <source src="Songs/PALAGI - TJ Monterde  OFFICIAL MUSIC VIDEO.mp3" type="audio/mp3">
-        <!-- <source src="Songs/PALAGI.ogg" type="audio/ogg">
-        <source src="Songs/PALAGI.wav" type="audio/wav"> -->
+        <source src="Songs/Avril Lavigne - I'm with You (Lyrics).mp3" type="audio/mp3">
+        <source src="Songs/PALAGI.wav" type="audio/wav">
         Your browser does not support the audio element.
     </audio>
 
@@ -348,46 +343,44 @@
         });
 
         document.addEventListener("DOMContentLoaded", () => {
-        const bgMusic = document.getElementById("bgMusic");
-        const musicControl = document.getElementById("musicControl");
-        let isMusicPlaying = false;
+            const bgMusic = document.getElementById("bgMusic");
+            const musicControl = document.getElementById("musicControl");
+            let isMusicPlaying = false;
 
-        // Ensure audio is loaded before playing
-        bgMusic.oncanplaythrough = () => {
-            bgMusic.muted = true;
-            bgMusic.play().then(() => {
-                bgMusic.muted = false; // Unmute after autoplay starts
-                isMusicPlaying = true;
-                musicControl.textContent = "🎵";
-            }).catch(() => {
-                console.warn("Autoplay with sound is blocked. User interaction required.");
+            // Try to play the music when the page loads
+            function startMusic() {
+                bgMusic.muted = true; // Start muted for autoplay compliance
+                bgMusic.play().then(() => {
+                    bgMusic.muted = false; // Unmute after autoplay starts
+                    isMusicPlaying = true;
+                    musicControl.textContent = "🎵";
+                }).catch(() => {
+                    console.warn("Autoplay blocked. User interaction is required.");
+                });
+            }
+
+            // Attempt autoplay
+            startMusic();
+
+            // Fallback: Play when the user interacts (click or touch)
+            document.addEventListener("click", startMusic, { once: true });
+            document.addEventListener("touchstart", startMusic, { once: true });
+
+            // Music control button to toggle play/pause
+            musicControl.addEventListener("click", () => {
+                if (isMusicPlaying) {
+                    bgMusic.pause();
+                    musicControl.textContent = "🔇";
+                } else {
+                    bgMusic.play();
+                    musicControl.textContent = "🎵";
+                }
+                isMusicPlaying = !isMusicPlaying;
             });
-        };
 
-        // User interaction to enable music on mobile devices
-        document.addEventListener("click", () => {
-            if (!isMusicPlaying) {
-                bgMusic.play();
-                musicControl.textContent = "🎵";
-                isMusicPlaying = true;
-            }
-        }, { once: true });
-
-        // Music control button to toggle play/pause
-        musicControl.addEventListener("click", () => {
-            if (isMusicPlaying) {
-                bgMusic.pause();
-                musicControl.textContent = "🔇";
-            } else {
-                bgMusic.play();
-                musicControl.textContent = "🎵";
-            }
-            isMusicPlaying = !isMusicPlaying;
+            // Background music volume control
+            bgMusic.volume = 1;
         });
-
-        // Background music volume control
-        bgMusic.volume = 0.5;
-    });
     </script>
 </body>
 </html>
