@@ -50,11 +50,11 @@
             border-radius: 25px; 
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); 
             letter-spacing: 4px;
-            animation: wobble 1s infinite alternate; 
+            animation: heartbeat 1s infinite alternate;
         }
-        @keyframes wobble {
-            0% { transform: rotate(3deg); }
-            100% { transform: rotate(-3deg); }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
         .title:hover {
             transform: scale(1.05); 
@@ -105,10 +105,17 @@
             border-radius: 20px;
             border: 2px solid #eb3e5b;
             transition: transform 0.3s, box-shadow 0.3s;
+            animation: wiggle 2s infinite ease-in-out;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+            75% { transform: rotate(1deg); }
         }
         .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Romantic glowing effect */
+            transform: scale(.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); /* Romantic glowing effect */
         }
         h3 {
             font-weight: bold;
@@ -152,12 +159,27 @@
             font-size: clamp(16px, 4vw, 24px);
             padding: clamp(8px, 2vw, 10px);
         }
+        .password-container input:focus {
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            border-color: #ff0000;
+        }
         .password-container input::placeholder {
             font-family: 'Great Vibes', cursive;
             font-size: clamp(14px, 3vw, 20px);
             color: rgba(223, 9, 116, 0.7);
             font-weight: normal;
             letter-spacing: 2px;
+        }
+        .password-container input:focus::placeholder {
+            color: transparent;
+        }
+        .password-container input:focus::after {
+            content: '|';
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
         }
         .password-container input[type="password"], .password-container input[type="text"] {
             font-size: 24px;
@@ -166,11 +188,11 @@
             border-radius: 10px;
             padding: 10px;
             width: 100%;
-            transition: background 0.3s; /* Background transition */
+            transition: background 0.3s; 
         }
         .password-container input[type="password"]:focus, 
         .password-container input[type="text"]:focus {
-            background: rgba(255, 255, 255, 0.5); /* Change background on focus */
+            background: rgba(255, 255, 255, 0.5);
         }
         .toggle-password {
             position: absolute;
@@ -322,14 +344,16 @@
             var passField = document.getElementById("passcode");
             passField.value = passField.value.slice(0, -1);
         }
-        function input(event) {
-            var passField = document.getElementById("passcode");
-            passField.value += event.key;
-            if(event.key === '\b') {
+        document.addEventListener('keydown', function(event) {
+            let passField = document.getElementById("passcode");
+            if (!isNaN(event.key) && event.key !== ' ') {
+                passField.value += event.key;
+            } else if (event.key === 'Backspace') {
                 deleteLastChar();
+            } else if (event.key === 'Enter') {
+                checkPass();
             }
-        }
-        document.addEventListener('keydown', input);
+        });
     </script>
 </body>
 </html>

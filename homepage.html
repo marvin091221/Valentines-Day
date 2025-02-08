@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('Pictures/Valentines-Day.jpg');
+            background-image: url('/Pictures/Valentines-Day.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -35,7 +35,8 @@
             color: white;
             font-family: 'Great Vibes', cursive;
             font-size: 8vw; /* Responsive font size */
-            animation: fadeIn 1s, fadeOut 4s 5s forwards;
+            animation: fadeIn 1s, fadeOut 3s 4s forwards;
+            animation-fill-mode: forwards;
         }
         .intro-title {
             text-align: center;
@@ -57,12 +58,14 @@
             position: absolute;
             width: 5vw; 
             height: 5vw; 
-            background-color: red;
+            font-size: 3vw; /* Adjust the font size as needed for heart emojis */
+            color: red;    /* Color for heart emojis */
             animation: float 4s forwards;
             opacity: 0.9;
-            clip-path: polygon(50% 0%, 95% 40%, 50% 100%, 5% 40%);
+            display: flex; /* Centers the heart emoji */
+            justify-content: center;
+            align-items: center;
         }
-
         @keyframes float {
             0% {
                 transform: translateY(0) scale(1);
@@ -73,7 +76,26 @@
                 opacity: 0;
             }
         }
+        .love-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: float-up 4s ease-out forwards;
+            opacity: 0;
+        }
 
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
         .main_container {
             display: flex;
             flex-direction: column;
@@ -115,6 +137,16 @@
             display: none;
         }
 
+        .image-item {
+            transition: transform 0.3s ease-in-out;
+        }
+        .image-item:hover {
+            animation: wiggle 0.5s ease-in-out infinite;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg) scale(1.05); }
+            50% { transform: rotate(3deg) scale(1.05); }
+        }
         .image-container img {
             width: 22vw; 
             height: 40dvh; 
@@ -183,6 +215,7 @@
             .title {
                 font-size: 8vw;
                 padding: 25px;
+                margin-bottom: 15%;
             }
             .main_container {
                 width: 88%;
@@ -197,9 +230,6 @@
                 margin-right: 10px;
                 cursor: pointer;
                 max-width: 350px; 
-            }
-            .title {
-                margin-bottom: 15%;
             }
             .btn {
                 padding: 10px 20px;
@@ -255,39 +285,78 @@
     </div>
 
     <script>
-        // Function to create floating hearts
+        // Existing heart creation function
         function createHeart() {
+            const hearts = ['❤️', '💕', '💝', '💖'];
             const heart = document.createElement('div');
             heart.className = 'heart';
-
-            // Randomize the starting position
-            heart.style.left = Math.random() * 100 + 'vw'; 
-            heart.style.top = Math.random() * 100 + 'vh'; 
-            heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
-
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.fontSize = (Math.random() * 100 + 60) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
             document.getElementById('intro').appendChild(heart);
-            
-            // Remove heart after animation is complete
-            heart.addEventListener('animationend', () => {
-                heart.remove();
-            });
+            heart.addEventListener('animationend', () => heart.remove());
         }
 
-        // Generate hearts every 300 milliseconds
-        setInterval(createHeart, 300);
+        // New function to create love particles on image hover
+        function createLoveParticle(x, y) {
+            const particles = ['❤️', '💕', '💝', '💖'];
+            const particle = document.createElement('div');
+            particle.className = 'love-particle';
+            particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.fontSize = (Math.random() * 80 + 70) + 'px';
+            document.body.appendChild(particle);
+            particle.addEventListener('animationend', () => particle.remove());
+        }
 
-        // Image click functionality for enlarged view
+        // Enhanced image interaction
         document.querySelectorAll('.image-item').forEach(img => {
-            img.addEventListener('click', function () {
+            img.addEventListener('mousemove', (e) => {
+                if (Math.random() < 0.1) { // Limit particle creation
+                    createLoveParticle(e.pageX, e.pageY);
+                }
+            });
+
+            img.addEventListener('click', function() {
                 const overlay = document.getElementById('overlay');
                 const overlayImage = document.getElementById('overlayImage');
                 overlayImage.src = this.src;
                 overlay.classList.add('active');
             });
         });
-        document.getElementById('overlay').addEventListener('click', function () {
+
+        // Keyboard navigation for image gallery
+        let currentImageIndex = 0;
+        const images = document.querySelectorAll('.image-item');
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                images[currentImageIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+            } else if (e.key === 'ArrowLeft') {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                images[currentImageIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+            } else if (e.key === 'Enter') {
+                images[currentImageIndex].click();
+            } else if (e.key === 'Escape' && document.getElementById('overlay').classList.contains('active')) {
+                document.getElementById('overlay').classList.remove('active');
+            }
+        });
+
+        // Close overlay on click
+        document.getElementById('overlay').addEventListener('click', function() {
             this.classList.remove('active');
         });
+
+        // Generate hearts
+        setInterval(createHeart, 300);
+        // Intro disappears after animations finish
+        setTimeout(() => {
+            document.getElementById('intro').remove();
+        }, 7000); // Total time of animations: 1s (fadeIn) + 3s (fadeOut) + 3s delay
     </script>
 </body>
 </html>
