@@ -347,39 +347,39 @@
             const musicControl = document.getElementById("musicControl");
             let isMusicPlaying = false;
 
-            // Try to play the music when the page loads
+            // Function to start music
             function startMusic() {
-                bgMusic.muted = true; // Start muted for autoplay compliance
+                bgMusic.muted = true; // Start muted to bypass autoplay restrictions
                 bgMusic.play().then(() => {
-                    bgMusic.muted = false; // Unmute after autoplay starts
+                    bgMusic.muted = false; // Unmute after play starts
                     isMusicPlaying = true;
-                    musicControl.textContent = "🎵";
-                }).catch(() => {
-                    console.warn("Autoplay blocked. User interaction is required.");
+                    musicControl.textContent = "🎵"; // Pause icon
+                }).catch((error) => {
+                    console.warn("Autoplay blocked. Trying alternative...");
                 });
             }
 
-            // Attempt autoplay
+            // Attempt autoplay directly
             startMusic();
 
-            // Fallback: Play when the user interacts (click or touch)
+            // Fallback: Play when user interacts (some browsers require it)
             document.addEventListener("click", startMusic, { once: true });
             document.addEventListener("touchstart", startMusic, { once: true });
 
-            // Music control button to toggle play/pause
+            // Play/Pause button
             musicControl.addEventListener("click", () => {
                 if (isMusicPlaying) {
                     bgMusic.pause();
-                    musicControl.textContent = "🔇";
+                    musicControl.textContent = "🔇"; // Play icon
                 } else {
                     bgMusic.play();
-                    musicControl.textContent = "🎵";
+                    musicControl.textContent = "🎵"; // Pause icon
                 }
                 isMusicPlaying = !isMusicPlaying;
             });
 
-            // Background music volume control
-            bgMusic.volume = 1;
+            // Set default volume (adjust as needed)
+            bgMusic.volume = 0.5;
         });
     </script>
 </body>
